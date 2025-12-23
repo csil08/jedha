@@ -14,4 +14,7 @@ RUN pip install -r /dependencies/requirements.txt
 
 COPY . /home/app
 
-CMD gunicorn app:app --bind 0.0.0.0:$PORT --worker-class uvicorn.workers.UvicornWorker #
+# Expose the port that Hugging Face expects
+EXPOSE 7860
+
+CMD gunicorn app:app --bind 0.0.0.0:7860 --worker-class uvicorn.workers.UvicornWorker #

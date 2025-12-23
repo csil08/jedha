@@ -135,7 +135,7 @@ cd dashboard
 docker build . -t dashboard-image
 
 # Run the dashboard container
-docker run -p 8501:8501 dashboard-image
+docker run -p 8501:7860 dashboard-image
 ```
 ### Access the dashboard locally
 Navigate to http://localhost:8501 in your browser
