@@ -30,14 +30,6 @@ st.markdown("""
         font-weight: 600;
         margin: 0.6rem 0;
     }
-
-    /* Subheaders */
-    .section-subheader {
-        color: #B322AA;
-        font-size: 2rem;
-        font-weight: 600;
-        margin: 0.6rem 0;
-    }
     
     /* Comments */
     .comment-box {
@@ -97,8 +89,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-#DATA_URL = 'https://full-stack-assets.s3.eu-west-3.amazonaws.com/Deployment/get_around_delay_analysis.xlsx'
-DATA_URL = 'data/get_around_delay_analysis.xlsx'
+DATA_URL = 'https://full-stack-assets.s3.eu-west-3.amazonaws.com/Deployment/get_around_delay_analysis.xlsx'
 
 
 ### App
@@ -122,11 +113,9 @@ def load_data():
     data_merged = data.join(data_previous, how='left')
     data_merged = data_merged.reset_index()
     
-    # Add indicators
+    # Add indicator of presence of a previous rental
     data_merged['has_previous_rental'] = 0
     data_merged.loc[data_merged['previous_ended_rental_id'].notnull(), 'has_previous_rental'] = 1
-    data_merged['is_previous_rental'] = 0
-    data_merged.loc[data_merged['rental_id'].isin(data_merged['previous_ended_rental_id']), 'is_previous_rental'] = 1
     
     # Add checkout status: early or on-time vs late
     data_merged['checkout_status'] = "undefined"
@@ -152,19 +141,6 @@ def load_data():
     data_merged.loc[mask_ontime, 'conflict'] = "no conflict"
     data_merged.loc[mask_no_previous_rental, 'conflict'] = "no conflict"
     data_merged.loc[mask_late_with_undefined_impact, 'conflict'] = "missing values"
-            
-    # Add delay impact
-    data_merged['delay_impact'] = "undefined"
-    mask_late_with_impact = (data_merged['previous_checkout_status']=='previous rental late') & (data_merged['previous_delay_at_checkout'].notnull()) & (data_merged['previous_delay_at_checkout']>data_merged['time_delta_with_previous_rental'])
-    mask_late_with_no_impact = (data_merged['previous_checkout_status']=='previous rental late') & (data_merged['previous_delay_at_checkout'].notnull()) & (data_merged['previous_delay_at_checkout']<=data_merged['time_delta_with_previous_rental'])
-    mask_late_with_undefined_impact = (data_merged['previous_checkout_status']=='previous rental late') & (data_merged['previous_delay_at_checkout'].isnull())
-    mask_ontime = (data_merged['previous_checkout_status']=='previous rental early or on-time')
-    mask_no_previous_rental = (data_merged['previous_checkout_status']=='no previous rental')
-    data_merged.loc[mask_late_with_impact, 'delay_impact'] = "late with impact on the next rental"
-    data_merged.loc[mask_late_with_no_impact, 'delay_impact'] = "late but no impact (no following rental, or no impact or next rental)"
-    data_merged.loc[mask_late_with_undefined_impact, 'delay_impact'] = "late with undefined impact"
-    data_merged.loc[mask_ontime, 'delay_impact'] = "early or on-time"
-    data_merged.loc[mask_no_previous_rental, 'delay_impact'] = "no previous rental"
 
     # Add waiting time: previous delay at checkout - time delta with previous rental
     data_merged['waiting_time'] = np.nan
@@ -186,8 +162,8 @@ st.markdown("""
     <p>Late returns at checkout may cause significant friction for the following rental, leading to customer dissatisfaction and/or rental cancellation. </p>
     <p>This dashboard provides insights into:
     <li><b>delay characteristics</b>: frequency and magnitude of delays at checkout;</li>
-    <li><b>conflict analysis</b>: impact of late returns on consecutive rentals;</li>
-    <li><b>scenario simulation</b>: effects of implementing of a <b>minimum delay between consecutive car rentals</b>.</li> </p>
+    <li><b>impact of a late checkout on the following rental and analysis of conflicts</b>;</li>
+    <li><b>scenario simulation</b>: effects of implementing of a <b>minimum delay</b> between consecutive car rentals.</li> </p>
 """, unsafe_allow_html=True)
 
 st.divider()
@@ -275,7 +251,7 @@ with col3:
             'text': 'Check-in type repartition',
             'x': 0.5, 
             'xanchor': 'center',
-            'y': 0.95,  # Position verticale du titre (0.95 = 95% de la hauteur)
+            'y': 0.95,
             'yanchor': 'top'
         },
         showlegend=False,
@@ -290,7 +266,10 @@ st.divider()
 
 df_ended_delay = df.loc[(df['state']=="ended") & (df['delay_at_checkout'].notnull())]
 df_ended_delayna = df.loc[(df['state']=="ended") & (df['delay_at_checkout'].isnull())]
-df_ended = df.loc[df['state']=="ended"]
+
+# Total completed rentals (which are generating revenue)
+df_ended = df.loc[(df['state']=='ended')]
+nb_ended = len(df_ended)
 
 nb_rentals_late = len(df_ended_delay.loc[df_ended_delay['checkout_status']=="late"])
 proportion_late_vs_global = round(nb_rentals_late/len(df) * 100, 0)
@@ -306,7 +285,7 @@ st.markdown(f"""
 <li>Half of all mobile users are delayed by 14 minutes or more, whereas half of all Connect users are at least 9 minutes early for checkout.</li>
 </ul>
 <p style="color:gray"><small>NB: these results apply only to rentals with available checkout delay data. 
-Data is missing is missing for {len(df_ended_delayna)} rentals, representing {round(len(df_ended_delayna)/len(df_ended)*100, 1)}% of completed rentals.</small></p>
+Data is missing is missing for {len(df_ended_delayna)} rentals, representing {round(len(df_ended_delayna)/nb_ended*100, 1)}% of completed rentals.</small></p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -410,116 +389,22 @@ with col3:
 st.divider()
 
 
-### --------- CANCELLATIONS ------------- ###
-
-st.markdown('<div class="section-header">Cancellations</div>', unsafe_allow_html=True)
-
-st.markdown("""
-<div class="comment-box">
-    <p>Late returns do not lead to higher cancellation rates for subsequent rentals.</p>
-    <p>The cancellation rate is higher for Connect check-in rentals (19%) than for Mobile ones (15%).</p>
-</div>
-""", unsafe_allow_html=True)
-
-col1, col2 = st.columns([1, 4], gap="small")
-
-with col1:
-    checkin_filter = st.selectbox("Select the check-in type", options, key="checkin_filter3") 
-
-if checkin_filter != "All":
-    df_filter = df.loc[df['checkin_type'] == checkin_filter.lower()].copy()
-else:
-    df_filter = df.copy()
-
-df_canceled = df_filter.loc[df_filter['state']=='canceled']
-nb_canceled = len(df_canceled)
-prct_canceled = len(df_canceled)/len(df_filter)*100
-    
-col1, col2, col3 = st.columns([1, 2, 2], gap="small")
-with col1:
-    st.metric(
-        "Cancellation rate", 
-        f"{round(prct_canceled, 1):,} %",
-        help="Percentage of canceled rentals out of the total matching the applied filter"
-    )
-
-with col2:
-    df_agg = df_filter.groupby(['previous_checkout_status_regroup', 'state']).size().reset_index(name='count')
-    df_agg['proportion'] = df_agg['count'] / df_agg.groupby('previous_checkout_status_regroup')['count'].transform('sum') * 100
-    
-    color_map = {
-    'ended': '#D89ACF', 
-    'canceled': '#9A1C93',
-    }
-    
-    fig = px.bar(df_agg,
-                x='previous_checkout_status_regroup',
-                y='proportion',
-                color='state',
-                title='Canceled vs completed rentals by prior checkout status',
-                barmode='stack',
-                text=df_agg.apply(lambda row: f"{row['state']}: {row['proportion']:.0f}%", axis=1),
-                hover_data={'count': True},
-                color_discrete_map=color_map,
-                #height=450
-                )
-
-    fig.update_layout(
-        xaxis_title='Previous checkout status',
-        yaxis_title='Proportion of rentals',
-        showlegend=False,
-        title={'x': 0.5,'xanchor': 'center',
-            'y': 0.95,
-            'yanchor': 'top'},
-        margin=dict(l=20, r=20, t=50, b=20)
-    )
-    fig.update_traces(
-        hovertemplate="<b>%{x}</b><br>State: %{fullData.name}<br>Proportion: %{y:.0f}%<br>Count: %{customdata[0]}<extra></extra>",
-        textposition='inside',
-        insidetextanchor='middle'
-    )
-    st.plotly_chart(fig, use_container_width=True)
-
-
-# Distribution of delays for canceled rentals, by previous checkout status
-with col3:
-    fig = px.box(
-        df_filter.loc[df_filter['previous_checkout_status_regroup']=='previous rental late'],
-        x='state',
-        y='previous_delay_at_checkout',
-        color='state',
-        title="Checkout delay for previously late rentals",
-    )
-    fig.update_layout(
-        xaxis_title='Rental state',
-        yaxis_title='Previous delay at checkout',
-        showlegend=False,
-        title={'x': 0.5,'xanchor': 'center',
-            'y': 0.95,
-            'yanchor': 'top'},
-        margin=dict(l=20, r=20, t=50, b=20)
-    )
-    fig.update_yaxes(range=[0, 360])
-
-    st.plotly_chart(fig, use_container_width=True)
-    
-st.divider()
-
-
 ### --------- CONSECUTIVE RENTALS ------------- ###
 
-st.markdown('<div class="section-header">Conflicts analysis</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-header">Impact of a late checkout on the following rental</div>', unsafe_allow_html=True)
 
 st.markdown("""
 <div class="comment-box">
-    <p>This section focuses on consecutive rentals which accounts for a small fraction (8.1%) of all rentals.</p>
-    <p>In half of the cases, the previous driver is late at checkout, with a median delay of 42 minutes.</p>
-    <p>Conflictual situations arise when the previous delay at checkout is higher than the planned delay between rentals.
-    A late return leads to a conflict in x% of cases (% of all rentals).</p>
-    <p>Conflicts are problematic since they force the next driver to wait for the preceding driver if he/she still decides not to cancel the rental.
-    In such situations, the median waiting time is xx min.</p>
-    <p>The cancellation rate is % in case of conflict compared to % in case of no conflict.</p>
-    {len(df.loc[df['has_previous_rental']==1])} cases ({round(len(df.loc[df['has_previous_rental']==1])/len(df)*100,1)}%) involve consecutive rentals.  <br>
+    <p>This section analyzes consecutive rentals which represents a small proportion (8.1%) of all rentals.
+    In half of these cases, the previous driver returns the car late, with a median delay of 42 minutes.</p>
+    <p>However, a late return does not necessarily have a negative impact on the next rental.
+    Conflicts arise only when the previous driver’s return delay exceeds the scheduled interval between rentals. 
+    Overall, 218 such conflicts have been recorded, accounting for 1% of all rentals, which is relatively small.</p>
+    <p>These conflicts are problematic, as they force the next driver to wait if they choose not to cancel their reservation. 
+    In such cases, the median waiting time is 27 minutes.</p>
+    <p>The cancellation rate remains comparable (~15% - 17%), regardless of a conflict occurrence.
+    Indeed, rentals may be cancelled for various reasons beyond time conflicts with the previous rental.</p>
+    <p>See below how the findings vary by check-in type (select an option)</p>
     <p style="color:gray"><small>NB: these results apply only to rentals with available checkout delay data.</small></p>
 
 </div>
@@ -566,17 +451,17 @@ with col2:
                 color_discrete_map=color_map, 
                 height=420)
     fig.update_traces(
-    textinfo='percent+label',  # Affiche label + pourcentage
-    texttemplate='%{label}<br>%{percent:.0%}',  # Format : "Modalité<br>30%"
-    insidetextorientation='horizontal',  # **Force l'orientation horizontale**
-    textposition='inside'  # Place le texte à l'intérieur des secteurs
+    textinfo='percent+label',
+    texttemplate='%{label}<br>%{percent:.0%}',  
+    insidetextorientation='horizontal',
+    textposition='inside'
     )
     fig.update_layout(
         title={
             'text': 'Repartition of previous checkout delay status',
             'x': 0.5, 
             'xanchor': 'center',
-            'y': 0.95,  # Position verticale du titre (0.95 = 95% de la hauteur)
+            'y': 0.95,
             'yanchor': 'top'
         },
         showlegend=False,
@@ -691,11 +576,11 @@ with col3:
         df_filter_conflict, 
         x="waiting_time", 
         marginal="box",
-        title=f"Distribution of waiting time in case of conflict", 
+        title=f"Distribution of next driver waiting time in case of conflict", 
         color_discrete_sequence=["#9A1C93"],
     )
     fig.add_vline(
-        x=delay_median,
+        x=median_waiting_time,
         line_dash="dash",
         line_color="#3390FF",
     )
@@ -733,7 +618,7 @@ with col3:
     st.plotly_chart(fig, use_container_width=True)
     
 
-
+st.divider()
 
 ### --------- SIMULATION OF MIN DELAY BW RENTALS ------------- ###
 st.markdown('<div class="section-header">Scenario analysis: buffer time between rentals</div>', unsafe_allow_html=True)
@@ -745,52 +630,55 @@ st.markdown(f"""
     <li> the number and the proportion of cancellations which could be avoided.</li>
     <li> the proportion of revenue which could be lost, roughly approximated by the proportion of ended rentals which are hidden from search results among all ended rentals.</li>
     </p>
-    <p><u>Lecture note:</u><br>
-    By applying a minimum 30-minute delay of all check-in types, Get Around hides 1.2% of rental offers from search results and loses revenue associated with 1.4% of rentals but reduces by half the number of conflicts and avoids 1.1% of cancellations.
-    </p>
+</div>
+""", unsafe_allow_html=True)
+
+st.markdown(f"""
+<div class="comment-box">
+    <p>Implementing a minimum delay between rentals leads to a revenue loss, but reduces conflictual cases and customer dissatisfaction. </p>
+    <p>A <b>30-minute threshold for all check-in types</b> seems interesting:</p>
+    <li> GetAround excludes 1.2% of rental offers from search results, sacrificing revenue from 1.4% of potential rentals.</li>
+    <li> However this measure reduces conflicts by nearly half and prevents 1.1% of cancellations.</li>
+    <li> The ratio of avoided conflicts to hidden offers is most favorable at this threshold. 
+    Beyond 30 minutes, the trade-off weakens: the Get Around platform hides substantially more offers than it resolves conflicts.</li>
 </div>
 """, unsafe_allow_html=True)
 
 col1, col2 = st.columns([1, 4], gap="small")
+
 with col1:
-    checkin_selection_simulation = st.selectbox("Select the check-in type", options=["all", "connect", "mobile"], key="checkin_selection_simulation") 
+    checkin_filter = st.selectbox("Select the check-in type", options, key="checkin_filter3") 
 
-if checkin_selection_simulation in ["mobile", "connect"]:
-    df_selection = df.loc[df['checkin_type']==checkin_selection_simulation].copy()
+if checkin_filter != "All":
+    df_filter = df.loc[df['checkin_type'] == checkin_filter.lower()].copy()
 else:
-    df_selection = df.copy()
+    df_filter = df.copy()
 
 
-df_ended = df.loc[(df['state']=='ended')]
-nb_ended = len(df_ended)
+# Total conflictual cases
+mask_conflict_total = (df['previous_delay_at_checkout'].notnull()) & (df['time_delta_with_previous_rental'].notnull()) & (df['previous_delay_at_checkout']>df['time_delta_with_previous_rental'])
+nb_conflict = len(df.loc[mask_conflict_total])  # total number of conflicts
 
-mask_conflict1 = (df['previous_delay_at_checkout'].notnull()) & (df['time_delta_with_previous_rental'].notnull()) & (df['previous_delay_at_checkout']>df['time_delta_with_previous_rental'])
-nb_conflict = len(df.loc[mask_conflict1])  # total number of conflicts
-
+# Total canceled rentals
 nb_canceled = len(df.loc[df['state']=='canceled'])
 
 # The feature has an impact on consecutive rentals (rentals preceded by another rental)
 # Filter on consecutive rentals with non-missing previous delay at checkout
-df_previous = df_selection.loc[(df_selection['has_previous_rental']==1) & (df_selection['previous_delay_at_checkout'].notnull())]
-nb_total = len(df_previous)
+df_hasprevious = df_filter.loc[(df_filter['has_previous_rental']==1) & (df_filter['previous_delay_at_checkout'].notnull())]
+nb_total = len(df_hasprevious)
 
-# Conflictual situations
-mask_conflict = (df_selection['previous_delay_at_checkout'].notnull()) & (df_selection['time_delta_with_previous_rental'].notnull()) & (df_selection['previous_delay_at_checkout']>df_selection['time_delta_with_previous_rental'])
-df_conflict = df_selection.loc[mask_conflict]
-#nb_conflict = len(df_conflict)
-
+# Conflictual situations with filter
+mask_conflict = (df_filter['previous_delay_at_checkout'].notnull()) & (df_filter['time_delta_with_previous_rental'].notnull()) & (df_filter['previous_delay_at_checkout']>df_filter['time_delta_with_previous_rental'])
+df_conflict = df_filter.loc[mask_conflict]
 
 # Canceled rentals which are preceded by another rental
-df_canceled_previous = df_selection.loc[(df_selection['state']=='canceled') & (df_selection['has_previous_rental']==1)]
-#nb_canceled_previous = len(df_canceled_previous)
+df_canceled_previous = df_filter.loc[(df_filter['state']=='canceled') & (df_filter['has_previous_rental']==1)]
 
 # Ended rentals which are preceded by another rental
-df_ended_previous = df_selection.loc[(df_selection['state']=='ended') & (df_selection['has_previous_rental']==1)]
+df_ended_previous = df_filter.loc[(df_filter['state']=='ended') & (df_filter['has_previous_rental']==1)]
 nb_ended_previous = len(df_ended_previous)
 
-#threshold_up = int(df['time_delta_with_previous_rental'].dropna().max())+30
 threshold_range = sorted(df['time_delta_with_previous_rental'].dropna().unique())
-#threshold_range.append(threshold_up)
 
 results = []
 
@@ -799,15 +687,13 @@ previous_delay = df_ended['previous_delay_at_checkout']
 
 for threshold in threshold_range:
     
-    count_blocked = ((df_previous['time_delta_with_previous_rental'].notnull()) & (df_previous['time_delta_with_previous_rental']<threshold)).sum()
+    count_blocked = ((df_hasprevious['time_delta_with_previous_rental'].notnull()) & (df_hasprevious['time_delta_with_previous_rental']<threshold)).sum()
     count_solved = (df_conflict['time_delta_with_previous_rental']<threshold).sum()
     count_blocked_ended = (df_ended_previous['time_delta_with_previous_rental']<threshold).sum()
     count_blocked_canceled = (df_canceled_previous['time_delta_with_previous_rental']<threshold).sum()
 
-    #prct_blocked = count_blocked/nb_total*100
-    prct_blocked = count_blocked/nb_rentals*100
+    prct_blocked = count_blocked/len(df)*100
     prct_solved = count_solved/nb_conflict*100
-    #prct_blocked_canceled = count_blocked_canceled/nb_canceled_previous*100
     prct_blocked_canceled = count_blocked_canceled/nb_canceled*100
     prct_revenue_loss = count_blocked_ended/nb_ended*100
     
@@ -899,7 +785,6 @@ with col1:
         },
         xaxis_title='Minimum delay threshold (min)',
         yaxis_title='Number of cases',
-        #xaxis=dict(hoverformat=".f min"),
         margin=dict(b=90),
         hovermode='x unified',
         height=550,
@@ -948,8 +833,9 @@ with col2:
     st.plotly_chart(fig, use_container_width=True)
 
 
+
 ### Footer 
-empty_space, footer = st.columns([0.9, 0.1])
+empty_space, footer = st.columns([0.85, 0.15])
 
 with empty_space:
     st.write("")
