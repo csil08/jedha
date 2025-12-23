@@ -1,7 +1,5 @@
 [browser]
-serverPort = 80
-serverPort = 8501
 serverAddress = 'localhost'
 
 [theme]
-base = "Light"
+base = "light"
