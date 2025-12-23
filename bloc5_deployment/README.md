@@ -53,8 +53,8 @@ This project aims to address two main issues:
 ## Deliverables
 
 * [Dashboard](https://huggingface.co/spaces/csil08/get_around_dashboard) to explore the impact of late returns and simulate a minimum buffer time between bookings    
-* [Predict endpoint](https://your-username-getaround-api.hf.space/predict) returning price suggestions from a trained machine learning model
-* [API Documentation](https://huggingface.co/spaces/your-username/getaround-api) 
+* [API Documentation](https://csil08-get-around-api.hf.space/docs) 
+* [Predict endpoint](https://csil08-get-around-api.hf.space/predict) returning price suggestions from a trained machine learning model
 * [MLflow Experiment Tracking](https://csil08-mlflow-server-demo.hf.space/)
 
 
