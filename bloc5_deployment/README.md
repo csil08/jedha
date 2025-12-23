@@ -52,7 +52,7 @@ This project aims to address two main issues:
 
 ## Deliverables
 
-* [Dashboard](https://huggingface.co/spaces/csil08/get_around_dashboard) to explore the impact of late returns and simulate a minimum buffer time between bookings    
+* [Dashboard](https://csil08-get-around-dashboard-728da66.hf.space) to explore the impact of late returns and simulate a minimum buffer time between bookings    
 * [API Documentation](https://csil08-get-around-api.hf.space/docs) 
 * [Predict endpoint](https://csil08-get-around-api.hf.space/predict) returning price suggestions from a trained machine learning model
 * [MLflow Experiment Tracking](https://csil08-mlflow-server-demo.hf.space/)
@@ -135,7 +135,7 @@ cd dashboard
 docker build . -t dashboard-image
 
 # Run the dashboard container
-docker run -p 8501:7860 dashboard-image
+docker run -p 8501:8501 dashboard-image
 ```
 ### Access the dashboard locally
 Navigate to http://localhost:8501 in your browser
