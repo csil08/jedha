@@ -77,12 +77,12 @@ Four models are trained:
 - **Random Forest**;
 - **XGBoost**.
 
-The `train.py` script allows the user which model to train using the `--model` flag. By default, XGBoost (the preferred model) is selected.
+The `train.py` script allows the user to choose which model to train using the `--model` flag (four choices: `lasso`,  `ridge`,  `rf`, `xgb`). By default, XGBoost (the preferred model) is selected.
 
 Model artifacts and metrics are logged to the MLflow server hosted on Hugging Face. In addition, trained models are also saved locally in the `models/` folder for convenience.
 
 **Important:** 
-- While it is possible to run MLflow locally, this project uses a remote **Hugging Face-hosted server**. An AWS S3 bucket was used to store artifacts and a PostgreSQL database (via Neon) was used as the backend store.   
+- While it is possible to run MLflow locally, this project uses a remote **Hugging Face-hosted server**. An **AWS S3 bucket** was used to store artifacts and a **PostgreSQL database** (via Neon) was used as the backend store.   
 - To run the training or the API with your own models, you must set up your own MLflow server and configure any artifact storage and backend database as needed.
 
 
