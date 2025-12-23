@@ -1,11 +1,5 @@
-Procedure pour lancer dashboard streamlit.odt
-Procedure pour publication HuggingFace.odt
-01-Getaround_analysis.ipynb
-get_around_consigne.ipynb
-pricing.odt
-methodo.txt
-img/
-
 # Python cache files
 __pycache__/
 *.pyc
+
+img/
