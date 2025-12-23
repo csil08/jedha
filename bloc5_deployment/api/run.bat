@@ -1,9 +1,8 @@
 @echo off
 
 docker run -it ^
- -p 4000:4000 ^
+ -p 4000:7860 ^
  -v "%cd%:/home/app" ^
- -e PORT=4000 ^
  -e MLFLOW_TRACKING_URI=%MLFLOW_TRACKING_URI% ^
  -e AWS_ACCESS_KEY_ID=%AWS_ACCESS_KEY_ID% ^
  -e AWS_SECRET_ACCESS_KEY=%AWS_SECRET_ACCESS_KEY% ^
