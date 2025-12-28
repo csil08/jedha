@@ -1,0 +1,36 @@
+city_id,city,city_display_name,city_lat,city_lon
+1,Mont Saint Michel,"Mont Saint-Michel, Le Mont-Saint-Michel, Avranches, Manche, Normandie, France métropolitaine, 50170, France",48.6360211,-1.5114947
+2,St Malo,"Saint-Malo, Ille-et-Vilaine, Bretagne, France métropolitaine, France",48.4904728,-1.7421555
+3,Bayeux,"Bayeux, Calvados, Normandie, France métropolitaine, France",49.2455634,-0.7916770
+4,Le Havre,"Le Havre, Seine-Maritime, Normandie, France métropolitaine, France",49.6275492,0.3921241
+5,Rouen,"Rouen, Seine-Maritime, Normandie, France métropolitaine, France",49.5184350,1.0221643
+6,Paris,"Paris, Île-de-France, France métropolitaine, France",48.8534951,2.3483915
+7,Amiens,"Amiens, Somme, Hauts-de-France, France métropolitaine, France",49.9610783,2.2518181
+8,Lille,"Lille, Nord, Hauts-de-France, France métropolitaine, France",50.6180640,3.0453037
+9,Strasbourg,"Strasbourg, Bas-Rhin, Collectivité européenne d'Alsace, Grand Est, France métropolitaine, France",48.5681009,7.6885972
+10,Chateau du Haut Koenigsbourg,"Château du Haut-Kœnigsbourg, Orschwiller, Sélestat-Erstein, Bas-Rhin, Grand Est, France métropolitaine, 67600, France",48.2495226,7.3454923
+11,Colmar,"Colmar, Colmar-Ribeauvillé, Haut-Rhin, Collectivité européenne d'Alsace, Grand Est, France métropolitaine, 68000, France",48.0777517,7.3579641
+12,Eguisheim,"Eguisheim, Colmar-Ribeauvillé, Haut-Rhin, Grand Est, France métropolitaine, 68420, France",48.0447968,7.3079618
+13,Besancon,"Besançon, Doubs, Bourgogne-Franche-Comté, France métropolitaine, France",47.2283679,6.0189231
+14,Dijon,"Dijon, Côte-d'Or, Bourgogne-Franche-Comté, France métropolitaine, France",47.4087960,5.0646164
+15,Annecy,"Annecy, Haute-Savoie, Auvergne-Rhône-Alpes, France métropolitaine, France",45.8782687,6.1700093
+16,Grenoble,"Grenoble, Isère, Auvergne-Rhône-Alpes, France métropolitaine, France",45.0940786,5.6971980
+17,Lyon,"Lyon, Rhône, Auvergne-Rhône-Alpes, France métropolitaine, France",45.6963425,4.7359480
+18,Gorges du Verdon,"Gorges du Verdon, Route de la Maline, La Palud-sur-Verdon, Castellane, Alpes-de-Haute-Provence, Provence-Alpes-Côte d'Azur, France métropolitaine, 04120, France",43.7496562,6.3285616
+19,Bormes les Mimosas,"Bormes-les-Mimosas, Toulon, Var, Provence-Alpes-Côte d'Azur, France métropolitaine, 83230, France",43.1506968,6.3419285
+20,Cassis,"Cassis, Marseille, Bouches-du-Rhône, Provence-Alpes-Côte d'Azur, France métropolitaine, 13260, France",43.2140359,5.5396318
+21,Marseille,"Marseille, Bouches-du-Rhône, Provence-Alpes-Côte d'Azur, France métropolitaine, France",43.3014878,5.5480010
+22,Aix en Provence,"Aix-en-Provence, Bouches-du-Rhône, Provence-Alpes-Côte d'Azur, France métropolitaine, France",43.5709847,5.3824189
+23,Avignon,"Avignon, Vaucluse, Provence-Alpes-Côte d'Azur, France métropolitaine, France",43.9636478,4.9424636
+24,Uzes,"Uzès, Nîmes, Gard, Occitanie, France métropolitaine, 30700, France",44.0121279,4.4196718
+25,Nimes,"Nîmes, Gard, Occitanie, France métropolitaine, France",43.9023189,4.3905257
+26,Aigues Mortes,"Aigues-Mortes, Nîmes, Gard, Occitanie, France métropolitaine, 30220, France",43.5661521,4.1915400
+27,Saintes Maries de la mer,"Saintes-Maries-de-la-Mer, Arles, Bouches-du-Rhône, Provence-Alpes-Côte d'Azur, France métropolitaine, 13460, France",43.4515922,4.4277202
+28,Collioure,"Collioure, Céret, Pyrénées-Orientales, Occitanie, France métropolitaine, 66190, France",42.5250500,3.0831554
+29,Carcassonne,"Carcassonne, Aude, Occitanie, France métropolitaine, France",43.2455853,2.1910511
+30,Ariege,"Ariège, Occitanie, France métropolitaine, France",42.9455368,1.4065544
+31,Toulouse,"Toulouse, Haute-Garonne, Occitanie, France métropolitaine, France",43.5792284,1.5033290
+32,Montauban,"Montauban, Tarn-et-Garonne, Occitanie, France métropolitaine, France",44.0540146,1.4938873
+33,Biarritz,"Biarritz, Bayonne, Pyrénées-Atlantiques, Nouvelle-Aquitaine, France métropolitaine, 64200, France",43.4832523,-1.5592776
+34,Bayonne,"Bayonne, Pyrénées-Atlantiques, Nouvelle-Aquitaine, France métropolitaine, France",43.2775332,-1.2087111
+35,La Rochelle,"La Rochelle, Charente-Maritime, Nouvelle-Aquitaine, France métropolitaine, France",46.1876796,-1.0642807
