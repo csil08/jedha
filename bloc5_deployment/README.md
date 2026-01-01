@@ -90,9 +90,9 @@ Model artifacts and metrics are logged to the MLflow server hosted on Hugging Fa
 ## API
 
 The `api/` folder provides a **FastAPI** application:
+- Interactive documentation accessible via `/docs` (using Swagger UI)
 - Input validation with **Pydantic**
 - Prediction endpoint: `/predict`
-- Interactive documentation accessible via `/docs`
 - Tests using `curl` and Python `requests`
 
 The API retrieves the XGBoost trained model logged in MLflow in order to make the predictions. 
@@ -119,6 +119,54 @@ docker build . -t api-image
 - Open API docs: http://localhost:4000/docs   
 - Predict endpoint: http://localhost:4000/predict
 
+### Testing the API
+You can send a test request to the API in several ways:
+
+- **run the test scripts** provided in the `tests/` folder:
+    - one script using **cURL** 
+    - one script using the **requests** library
+
+```
+# Run test_api_curl.ps1 (Windows): 
+.\test_api_curl.ps1
+
+# Run test_requests.py
+python test_requests.py
+```
+
+- **using Swagger**, by by selecting the desired endpoint and clicking on the **"Try it out"** option.
+
+In all cases, you must provide input data in JSON format.
+The API will return a response in JSON format containing the predicted price.
+
+**Example request using the `requests` library**:
+```
+response = requests.post(
+    "http://localhost:4000/predict", 
+    json={
+        "model_key":"Peugeot",
+        "mileage":100000,
+        "engine_power":110,
+        "fuel":"diesel",
+        "paint_color":"black",
+        "car_type":"sedan",
+        "private_parking_available":False,
+        "has_gps":True,
+        "has_air_conditioning":True,
+        "automatic_car":False,
+        "has_getaround_connect":False,
+        "has_speed_regulator":True,
+        "winter_tires":False
+})
+
+print(response.json())
+```
+**Example response**:
+```
+{
+  "predicted_price": 105.6
+}
+```
 
 ## Dashboard
 
