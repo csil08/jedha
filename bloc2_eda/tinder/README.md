@@ -19,23 +19,17 @@ Links:  [Dataset](https://full-stack-assets.s3.eu-west-3.amazonaws.com/M03-EDA/S
 
 The analysis follows these steps:
 
-- Initial exploration and overview of the dataset
+- **Initial exploration and overview of the dataset**
 
-- Data cleaning:
+- **Data cleaning**:
     - handling missing values
     - data validation
 
-- Descriptive statistics and visualizations
-
-- Detailed analysis, including:
-
+- **Descriptive statistics and visualizations**:
    - Analysis of the partner attributes participants value most, based on pre-experiment responses
-
    - Comparison of actual behavior with stated preferences
-
    - Participants' ability to evaluate their own perceived value in the dating market
-
-    - Influence of the round order on the decision to request a second date
+   - Influence of the round order on the decision to request a second date
 
 ## Deliverables
 
