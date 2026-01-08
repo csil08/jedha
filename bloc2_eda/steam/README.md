@@ -50,6 +50,15 @@ This project follows a structured data pipeline:
 3. **Exploratory data analysis** and  **visualisations**
 
 
+## Tech stack
+
+| **Category** | **Technology** |
+|-------------|----------------|
+| Platform | Databricks (Free Edition) |
+| Programming language | Python |
+| Data processing & analysis | Apache Spark (PySpark) |
+
+
 ## Key insights
 
 - **Rapid market expansion**: the Steam marketplace has grown rapidly since the mid-2010s. Annual releases increased sharply (more than 15 times) between 2014 and 2018, and peaked in 2021 with more than 8,800 releases.
@@ -65,13 +74,3 @@ This project follows a structured data pipeline:
 - **Genres**: Indie games are the most widespread genre (25%), followed by Action, Casual, and Adventure (14–15% each). These genres also show strong positive-to-negative review ratios. Some publishers specialize heavily in specific genres.
 
 - **Platforms**: Windows is the dominant platform (72% of games), while Mac and Linux account for 17% and 11%, respectively. Most genres are primarily available on Windows, with some categories being heavily concentrated on this platform (e.g. movies, audio production, video production, education).
-
-
-## Tech stack
-
-| **Category** | **Technology** |
-|-------------|----------------|
-| Platform | Databricks (Free Edition) |
-| Programming language | Python |
-| Data processing & analysis | Apache Spark (PySpark) |
-
