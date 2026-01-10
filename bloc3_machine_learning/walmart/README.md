@@ -53,7 +53,7 @@ The store-specific effects have a higher impact on sales, in contrast to exogene
 Seasonality also plays a role, in particular December shows a strong positive influence on sales, due to Christmas and end-of-year holidays and celebrations.
 
 Example for ridge regression (hyperparameter tuned using GridSearch CV):
-![Ridge regression - feature importance](img/ridge_gscv_feature_importance.png)
+![Ridge regression - feature importance](exports/ridge_gscv_feature_importance.png)
 
 ### Methodological limits
 The modelling does not properly takes into account the temporal structure of the dataset. It suffers from **data leakage** because of improper data splitting (where future data is included in the training set), which may lead to overestimate the models' performance.
