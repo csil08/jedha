@@ -40,8 +40,8 @@ Jupyter notebook (available in the repository): `tinder.ipynb`
 | **Category**       | **Technology / Library**                          |
 |---------------------|------------------------------------------|
 | Programming language           | Python                       |
-| Data processing                 | Pandas, NumPy                         |
-| Data visualisation    | Plotly                     |
+| Data processing                 | pandas, numpy                         |
+| Data visualisation    | plotly                     |
 
 
 ## Key insights
