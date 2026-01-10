@@ -1,6 +1,6 @@
 # Conversion rate
 
-This goal of this project is to **build a model to predict user conversion to the newsletter of [Data Science Weekly](www.datascienceweekly.org)**.
+This project aims at **building a classification model to predict user conversion to the newsletter of [Data Science Weekly](www.datascienceweekly.org)**.
 
 ## Dataset
 

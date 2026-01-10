@@ -4,23 +4,25 @@ This project aims to **identify the influential drivers of weekly sales of Walma
 
 ## Dataset
 
-The dataset used for this project is an *unbalanced panel** dataset of 150 observations about weekly sales achieved by 20 different Walmart stores over a period between 05/02/2010 to 19/10/2012. The dataset also contains data about 
-exogenous variables (such as unemployment rate, fuel price, temperature, Consumer Price Index) which might be useful for predicting the amount of sales.
+The dataset used in this project is an unbalanced panel of 150 observations about weekly sales, achieved by 20 different Walmart stores, over a period between 05/02/2010 to 19/10/2012.  
+
+The dataset also contains data about exogeneous variables:
+- economic variables : unemployment rate, fuel price, CPI (Consumer Price Index);
+- meteorological variable: temperature. 
 
 ## Project workflow
 
 The analysis follows these steps:
 
 - **Initial exploration and overview of the dataset**
-    - missing values, duplicates
 
 - **Preprocessings** to prepare data for modelling
 
-- **EDA and prior selection of the variables**
+- **Exploratory data analysis** and **prior selection of the features** to include in the modelling
 
 - **Model training**:
     - Baseline model: **linear regression model**
-    - Training **regularized regression models (Ridge, Lasso)** to avoid overfitting, with hyperparameter tuning via GridSearchCV
+    - **Regularized regression models (Ridge, Lasso)** to avoid overfitting, with hyperparameter tuning via GridSearchCV
 
 
 ## Deliverables
