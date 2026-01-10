@@ -59,13 +59,13 @@ This project aims to address two main issues:
 * [MLflow Experiment Tracking](https://csil08-mlflow-server-demo.hf.space/)
 
 
-## Tech Stack
+## Tech stack
 
-| **Component**       | **Technologies**                          |
+| **Component**       | **Technologies/Library**                 |
 |---------------------|------------------------------------------|
-| Dashboard           | Streamlit, Plotly                        |
-| API                 | FastAPI, Uvicorn                         |
-| Machine learning    | MLflow, Scikit-learn                     |
+| Dashboard           | streamlit, plotly                        |
+| API                 | FastAPI, uvicorn                         |
+| Machine learning    | MLflow, scikit-learn                     |
 | Containerization    | Docker                                   |
 | Hosting             | Hugging Face Spaces                      |
 
