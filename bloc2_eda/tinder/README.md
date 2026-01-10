@@ -33,8 +33,8 @@ The analysis follows these steps:
 
 ## Deliverables
 
-Jupyter notebook (available in the repository): `tinder.ipynb`
-
+- Jupyter notebook (containing descriptive analysis and visualizations): `tinder.ipynb`
+- A selection of visualizations stored in the `exports/` folder
 
 ## Tech stack
 | **Category**       | **Technology / Library**                          |
