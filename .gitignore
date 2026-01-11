@@ -1,5 +1,5 @@
 # Python cache files
 __pycache__/
 *.pyc
-
+bloc4_deep_learning_/exports/spam-classifier-distilbert/model.safetensors
 img/
