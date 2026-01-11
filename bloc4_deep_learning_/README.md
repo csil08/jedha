@@ -68,4 +68,4 @@ This dataset is highly imbalanced, with a much smaller proportion of spam messag
 
  **The DistilBERT model outperforms the baseline model**: it maintains excellent precision while reducing false negatives (improving the recall and F1-score).
  
- **The drawback of using transfer learning is its execution time**: on Google Colab, while the baseline model training takes only around 5 seconds, DistilBERT may require 3 minutes to complete the same task.**
+ **The drawback of using transfer learning is its execution time**: on Google Colab, while the baseline model training takes only around 5 seconds, DistilBERT may require 3 minutes to complete the same task.
