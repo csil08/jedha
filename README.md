@@ -17,7 +17,7 @@ The table below summarizes the competency blocks, the associated skills, and lin
 | **1. Data collection and management** | Data collection (web scraping, API requests) <br> Data storage (AWS S3 and RDS) <br> ETL process| [Kayak](./bloc1_data_collection_and_management) |
 | **2. Exploratory data analysis** | Data processing and cleaning<br> Descriptive statistics, univariate and multivariate analysis <br> Data visualisation <br> Big data analytics using PySpark| [Steam](./bloc2_eda/steam) <br> [Tinder](./bloc2_eda/tinder) |
 | **3. Supervised and unsupervised Machine Learning** | ML data pipelines<br>  Supervised ML models for regression and classification <br> Unsupervised ML models for clustering and dimensionality reduction <br> Model evaluation | [Walmart](./bloc3_machine_learning/walmart) <br> [Conversion rate](./bloc3_machine_learning/conversion_rate) <br> [North Face](./bloc3_machine_learning/north_face)|
-| **4. Deep learning** | Building neural networks <br> Using pre-trained deep learning models (transfer learning) | [Spam detector](./bloc4_deep_learning) |
+| **4. Deep learning** | Building neural networks <br> Using pre-trained deep learning models (transfer learning) | [Spam detector](./bloc4_deep_learning_) |
 | **5. Deployment** | Standardizing ML environments and workflows <br> Deploying web dashboards<br> Building prediction APIs to serve ML models <br> Deploying web dashboards| [Get Around](./bloc5_deployment) |
 | **6. Data project management** | Translating a real-word question into a data-oriented problem <br> Defining  project specifications <br> Following the project from design to deployment <br> Communicating data insights and methodology<br>| [Quiz generator](https://github.com/cnqs-jedha/pdf_to_quiz) |
 
